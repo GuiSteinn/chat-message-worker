@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-worker
+  namespace: app
+  labels:
+    app.kubernetes.io/name: message-worker
+    app.kubernetes.io/part-of: chat-distribuido
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: message-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: message-worker
+        app.kubernetes.io/part-of: chat-distribuido
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: worker
+          image: SEU_USUARIO/chat-message-worker:1.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: AWS_REGION
+              value: us-east-1
+            - name: SQS_WAIT_TIME_SECONDS
+              value: "20"
+            - name: SQS_VISIBILITY_TIMEOUT
+              value: "60"
+            - name: RECENT_MESSAGES_LIMIT
+              value: "50"
+            - name: METRICS_PORT
+              value: "8000"
+          envFrom:
+            - secretRef:
+                name: message-worker-secrets
+          ports:
+            - name: metrics
+              containerPort: 8000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: message-worker
+  namespace: app
+  labels:
+    app.kubernetes.io/name: message-worker
+spec:
+  selector:
+    app.kubernetes.io/name: message-worker
+  ports:
+    - name: metrics
+      port: 8000
+      targetPort: metrics
+

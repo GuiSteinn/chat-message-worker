@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Demo local: processar uma mensagem",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}\\worker\\demo_local.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}\\.env"
+    },
+    {
+      "name": "Worker real: consumir AWS SQS",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "app.main",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}\\worker",
+      "envFile": "${workspaceFolder}\\.env"
+    },
+    {
+      "name": "Lambda: testar evento SNS",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}\\lambda\\run_local.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
+

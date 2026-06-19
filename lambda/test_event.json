@@ -1,0 +1,11 @@
+{
+  "Records": [
+    {
+      "EventSource": "aws:sns",
+      "Sns": {
+        "Message": "{\"eventType\":\"message.created\",\"roomId\":\"r-1\",\"messageId\":\"m-1\",\"username\":\"Guilherme\",\"preview\":\"Ola\",\"timestamp\":\"2026-06-19T18:00:00Z\"}"
+      }
+    }
+  ]
+}
+

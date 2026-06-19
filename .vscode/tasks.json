@@ -1,0 +1,41 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "1. Criar ambiente Python",
+      "type": "shell",
+      "command": "py -3.12 -m venv .venv",
+      "problemMatcher": []
+    },
+    {
+      "label": "2. Instalar dependencias",
+      "type": "shell",
+      "command": ".\\.venv\\Scripts\\python.exe -m pip install -r .\\worker\\requirements.txt",
+      "problemMatcher": []
+    },
+    {
+      "label": "3. Subir MongoDB e Redis locais",
+      "type": "shell",
+      "command": "docker compose up -d",
+      "problemMatcher": []
+    },
+    {
+      "label": "4. Rodar testes",
+      "type": "shell",
+      "command": ".\\.venv\\Scripts\\python.exe -m unittest discover -s .\\worker\\tests -v",
+      "problemMatcher": []
+    },
+    {
+      "label": "5. Rodar demo local",
+      "type": "shell",
+      "command": ".\\.venv\\Scripts\\python.exe .\\worker\\demo_local.py",
+      "problemMatcher": []
+    },
+    {
+      "label": "Parar ambiente local",
+      "type": "shell",
+      "command": "docker compose down",
+      "problemMatcher": []
+    }
+  ]
+}

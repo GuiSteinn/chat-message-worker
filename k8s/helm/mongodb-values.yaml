@@ -1,0 +1,38 @@
+architecture: replicaset
+replicaCount: 3
+replicaSetName: rs0
+
+auth:
+  enabled: true
+  rootUser: root
+  rootPassword: TROQUE_ESTA_SENHA
+  usernames:
+    - chat
+  passwords:
+    - TROQUE_ESTA_SENHA
+  databases:
+    - chat
+  replicaSetKey: TROQUE_ESTA_CHAVE_LONGA
+
+persistence:
+  enabled: true
+  size: 2Gi
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 768Mi
+
+podAntiAffinityPreset: soft
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    namespace: monitoring
+    labels:
+      release: monitoring
+
